@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Toast</title>
+    <style>
+        #welcome-toast {
+            position: fixed;
+            top: -100px; /* Start above the viewport */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.5s ease;
+            width: max-content;
+            max-width: 90vw;
+        }
+
+        #welcome-toast.show {
+            top: 90px; /* Move to desired position */
+        }
+
+        #welcome-toast img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ccc;
+            flex-shrink: 0;
+        }
+
+        #welcome-toast .text-content p:first-child {
+            color: #2d3748;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 6px 0;
+            line-height: 1.2;
+        }
+
+        #welcome-toast .text-content p:last-child {
+            color: #718096;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 0;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Toast -->
+    <div id="welcome-toast">
+        <img src="/logo.png" alt="Logo">
+        <div class="text-content">
+            <p>আপনার দিনটি শুভ হোক</p>
+            <p>═══ সাদা-কালো ফ্যাশন ═══</p>
+        </div>
+    </div>
+
+    <script>
+        // Show toast with slide-in animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const toast = document.getElementById('welcome-toast');
+            toast.classList.add('show');
+            
+            // Hide toast after 2 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 500);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

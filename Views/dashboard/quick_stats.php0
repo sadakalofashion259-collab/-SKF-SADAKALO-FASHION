@@ -1,0 +1,58 @@
+<?php
+/**
+ * VIEW: dashboard/quick_stats.php
+ * ─────────────────────────────────────────────────────────────
+ * CSS Classes Used:
+ *   .stat-pill-row    → 2-column grid wrapper
+ *   .stat-pill        → individual stat card
+ *   .stat-pill-icon   → colored icon circle (42px)
+ *   .stat-pill-val    → big number (font-weight:900)
+ *   .stat-pill-lbl    → small label below number
+ * CSS Variables Used:
+ *   var(--card)       → card background
+ *   var(--b2)         → border color
+ *   var(--r-lg)       → border-radius large
+ *   var(--sh-sm)      → box-shadow small
+ *   var(--txt)        → text color
+ *   var(--muted)      → muted text color
+ *   var(--psoft)      → primary soft background
+ *   var(--primary)    → primary blue color
+ *   var(--greensoft)  → green soft background
+ *   var(--green)      → green accent color
+ * ─────────────────────────────────────────────────────────────
+ * Required vars:
+ *   $dashNextMemoNumber   int   — next memo number
+ *   $dashCustomerCount    int   — active customer count
+ */
+?>
+
+<!-- ══ QUICK STATS ══════════════════════════════════════════════
+     CSS: .stat-pill-row | .stat-pill | .stat-pill-icon
+          .stat-pill-val | .stat-pill-lbl
+     File: assets/style_css/premium.css
+══════════════════════════════════════════════════════════════ -->
+<div class="stat-pill-row">
+
+    <!-- পরবর্তী মেমো -->
+    <div class="stat-pill">
+        <div class="stat-pill-icon" style="background:var(--psoft);color:var(--primary);">
+            <i class="fas fa-file-invoice"></i>
+        </div>
+        <div>
+            <div class="stat-pill-val"><?php echo (int) ($dashNextMemoNumber ?? 1); ?></div>
+            <div class="stat-pill-lbl">পরবর্তী মেমো</div>
+        </div>
+    </div>
+
+    <!-- সক্রিয় কাস্টমার -->
+    <div class="stat-pill">
+        <div class="stat-pill-icon" style="background:var(--greensoft);color:var(--green);">
+            <i class="fas fa-users"></i>
+        </div>
+        <div>
+            <div class="stat-pill-val"><?php echo (int) ($dashCustomerCount ?? 0); ?></div>
+            <div class="stat-pill-lbl">কাস্টমার</div>
+        </div>
+    </div>
+
+</div>
