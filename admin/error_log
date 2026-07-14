@@ -1,0 +1,10 @@
+[25-May-2026 08:47:41 Asia/Dhaka] PHP Warning:  require_once(../track_activity.php): Failed to open stream: No such file or directory in /home/sadakal1/public_html/admin/sadakalo_full_admin_rest_otp.php on line 6
+[25-May-2026 08:47:41 Asia/Dhaka] PHP Fatal error:  Uncaught Error: Failed opening required '../track_activity.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home/sadakal1/public_html/admin/sadakalo_full_admin_rest_otp.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/sadakal1/public_html/admin/sadakalo_full_admin_rest_otp.php on line 6
+[11-Jun-2026 09:10:20 UTC] PHP Parse error:  syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" in /home/sadakalo/public_html/admin/admin_panel.php on line 166
+[11-Jun-2026 09:10:22 UTC] PHP Parse error:  syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" in /home/sadakalo/public_html/admin/admin_panel.php on line 166
+[11-Jun-2026 09:10:23 UTC] PHP Parse error:  syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" in /home/sadakalo/public_html/admin/admin_panel.php on line 166
+[11-Jun-2026 09:10:26 UTC] PHP Parse error:  syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" in /home/sadakalo/public_html/admin/admin_panel.php on line 166
+[11-Jun-2026 09:10:27 UTC] PHP Parse error:  syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" in /home/sadakalo/public_html/admin/admin_panel.php on line 166
