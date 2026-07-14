@@ -1,50 +1,47 @@
-# Customer Module — সাদা কালো ফ্যাশন
+# Hisab — Core Foundation (Step 1)
 
-সম্পূর্ণ মডিউলার স্ট্রাকচার। সব ফাইল যাবে: `/home/sadakalo/public_html/Customer/`
+মডিউল-ভিত্তিক MVC আর্কিটেকচারের ভিত্তি। টগলযোগ্য সব কনফিগ (SMS, Email,
+timezone, session) এখন `settings` DB টেবিলে — কোডে হার্ডকোড নয়।
 
 ## ফোল্ডার স্ট্রাকচার
 
 ```
-Customer/
-├── config/
-│   ├── bootstrap.php      # সেশন, অথ গার্ড, CSRF, হেডার, DB — সব পেজের এন্ট্রি পয়েন্ট
-│   ├── Env.php            # /home/sadakalo/App/.env লোডার
-│   ├── Database.php       # PDO কানেকশন (utf8mb4, prepared statements)
-│   └── .htaccess          # ডাইরেক্ট এক্সেস ব্লক
-├── Controllers/
-│   └── CustomerController.php
-├── Models/
-│   ├── CustomerModelInterface.php
-│   └── CustomerModel.php  # শুধু ডাটাবেস লজিক
-├── Services/
-│   ├── SmsService.php     # MiMSMS — credential আসে .env থেকে
-│   └── MailService.php    # Email — recipient আসে .env থেকে
-├── Helpers/
-│   └── ImageUploader.php  # সিকিউর base64 ইমেজ সেভ/ডিলিট
-├── Logs/                  # এরর লগ (.htaccess দিয়ে ব্লকড)
-├── uploads/               # ছবি (PHP execution ব্লকড)
-├── customers.php          # কাস্টমার লিস্ট পেজ
-└── customer_profile.php   # কাস্টমার প্রোফাইল/লেজার পেজ
+Hisab/  (= document root)
+├── bootstrap.php          ← একক প্রবেশ-ভিত্তি (আগের db_connect.php-এর নতুন রূপ)
+├── Config/
+│   ├── AppConfig.php       ← পাথ (auto-detect) + fallback ডিফল্ট
+│   └── schema/settings.sql ← settings টেবিল + ডিফল্ট সিড
+├── Core/
+│   ├── Env.php             ← শক্তিশালী .env পার্সার
+│   ├── Logger.php          ← সব এরর → Logs/error_log.txt
+│   ├── Database.php        ← PDO + prepared + transaction
+│   ├── Settings.php        ← DB-চালিত টগলযোগ্য কনফিগ (on/off)
+│   ├── Session.php         ← একীভূত নিরাপদ সেশন
+│   ├── Csrf.php            ← CSRF টোকেন
+│   ├── Security.php        ← XSS escape + base64url
+│   ├── View.php            ← ভিউ রেন্ডারার
+│   ├── Response.php        ← redirect / json / errorPage
+│   └── Views/error.php     ← এরর পেজ (আগের ডিজাইন)
+├── Modules/                ← Auth, Biometric, User, Sms, Email (পরের ধাপে)
+└── Logs/error_log.txt
 ```
 
-## ইনস্টলেশন
+## কনফিগ কোথায় থাকে
 
-1. পুরো `Customer/` ফোল্ডারটি `public_html/` এর ভিতরে আপলোড করুন।
-2. `/home/sadakalo/App/.env` ফাইলে key-গুলো মিলিয়ে নিন — নমুনা: `ENV_EXAMPLE.txt`
-   (SMS_KEY / SMS_API_KEY, EMAIL / NOTIFY_EMAIL — দুই নামই কাজ করবে)।
-3. পুরনো `uploads/` ফোল্ডারের ছবিগুলো নতুন `Customer/uploads/` এ কপি করুন
-   (DB-তে path relative আছে, তাই স্ট্রাকচার একই রাখলেই চলবে)।
-4. DB credentials `.env`-এ দিলে `db_connect.php` লাগবে না; না দিলে
-   `public_html/db_connect.php` আগের মতোই কাজ করবে।
+| জিনিস                         | কোথায়            | কেন |
+|-------------------------------|------------------|-----|
+| DB creds, এনক্রিপশন কি        | `.env` (ভল্ট)    | DB-তে ঢোকার আগেই লাগে |
+| timezone, session, SMS, Email | `settings` টেবিল | অ্যাডমিন প্যানেল থেকে on/off ও এডিট |
+| পাথ                           | AppConfig (auto) | __DIR__ থেকে স্বয়ংক্রিয় |
 
-## সিকিউরিটি ফিক্স (এই ভার্সনে)
+## ইনস্টল
 
-- SMS API key/username কোড থেকে সরিয়ে `.env`-এ (আগে hardcoded ছিল)
-- Email ঠিকানাও `.env`-এ
-- ইমেজ আপলোড: আসল JPEG/PNG/WebP ভেরিফিকেশন, 5MB লিমিট, path-traversal ব্লক
-- SMS পাঠানো এখন শুধু admin/manager (আগে যেকোনো লগইন ইউজার পারত)
-- Bulk SMS প্রতি ব্যাচে সর্বোচ্চ ৩০ জন
-- ট্রানজেকশন: ঋণাত্মক অঙ্ক ব্লক, তারিখ ফরম্যাট ভ্যালিডেশন
-- MD5 পাসওয়ার্ড অটো-আপগ্রেড হয়ে bcrypt হবে প্রথম সফল লগইন-ভেরিফাইয়ে
-- সেশন: HttpOnly + SameSite কুকি, ৩০ মিনিট পরপর session ID রোটেশন
-- Logs/, uploads/, config/ — .htaccess দিয়ে সুরক্ষিত
+```php
+// যেকোনো এন্ট্রি ফাইলের শুরুতে:
+require_once __DIR__ . '/bootstrap.php';
+// এখন $db, $logger, $settings প্রস্তুত; সেশনও চালু।
+```
+
+১. ফাইল আপলোড করুন (document root-এ)।
+২. `Config/schema/settings.sql` DB-তে import করুন (phpMyAdmin বা mysql CLI)।
+৩. `.env` প্রজেক্ট রুটের এক ধাপ উপরে `App/.env`-এ রাখুন।
